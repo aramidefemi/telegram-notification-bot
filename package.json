@@ -1,0 +1,27 @@
+{
+  "name": "aramidev",
+  "version": "1.0.0",
+  "description": "A telegram bot",
+  "author": "Aramidev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arkon/MERN-boilerplate.git"
+  },
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "node server",
+    "start:dev": "node server"
+  },
+  "engines": {
+    "node": ">=6"
+  },
+  "dependencies": {
+    "express": "^4.16.3",
+    "axios": "^0.19.2",
+    "mongoose": "^5.9.13",
+    "nodemon": "^1.17.2",
+    "body-parser": "^1.13.1",
+    "async": "^3.2.0"
+  }
+}
