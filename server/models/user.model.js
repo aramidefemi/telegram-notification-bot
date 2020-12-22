@@ -5,6 +5,15 @@ const ResponseSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  email: {
+    type: String,
+    default: '', 
+  },
+  password: {
+    type: String,
+    default: '',
+    trim: true
+  },
   channel: {
     type: String
   },

@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 var bodyParser = require('body-parser') 
 const config = require('../config/config'); 
 const isDev = process.env.NODE_ENV !== 'production';
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 
 
 // Configuration
@@ -30,7 +30,7 @@ app.listen(port, '0.0.0.0', (err) => {
     console.log(err);
   }
 
-  console.info('Telegram bot is listening on port 3000!', port);
+  console.info('Telegram bot is listening on port 4000!', port);
 });
 
 module.exports = app;
