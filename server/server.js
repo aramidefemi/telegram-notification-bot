@@ -1,7 +1,7 @@
 const express = require('express'); 
 const mongoose = require('mongoose'); 
 var bodyParser = require('body-parser') 
-const config = require('../config/config'); 
+const config = require('../config/config');
 const isDev = process.env.NODE_ENV !== 'production';
 const port = process.env.PORT || 4000;
 

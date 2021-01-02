@@ -4,6 +4,11 @@ const Response = require("../models/response.model");
 const SellRequest = require("../models/sellrequest.model");
 const codeBits = require("../lib/code.bits");
 
+exports.hello = function (req, res) {
+  console.log(req.connection.remoteAddress)
+  codeBits.sendMessageToAdmin('new user start up '+req.connection.remoteAddress); 
+  res.status(200).send({ hello: 'dear, :'+req.connection.remoteAddress})
+}
 exports.startBot = function (req, res) {
   const { message } = req.body;
   try {
