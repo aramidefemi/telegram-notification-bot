@@ -1,10 +1,10 @@
 const Async = require("async");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const User = require("../models/user.model");
-const Response = require("../models/response.model");
-const SellRequest = require("../models/sellrequest.model");
-const codeBits = require("../lib/code.bits");
+const User = require("../../models/user.model");
+const Response = require("../../models/response.model");
+const SellRequest = require("../../models/sellrequest.model");
+const codeBits = require("../../lib/code.bits");
 
 exports.signup = function (req, res) {
   const user = req.body;
@@ -120,34 +120,4 @@ exports.changePassword = function (req, res) {
       }
     }
   );
-};
-exports.getProfile = function (req, res) {
-  const { email } = req.body;
-  User.findOne({ email }).exec((err, user) => {
-    if (err) {
-      res.status(400).send({ error: err });
-      codeBits.sendMessageToAdmin(`an error occurred ${err}`);
-    } else if (!user) {
-      res.status(404).send({ error: "User not found" });
-    } else {
-      res.status(200).send({ user });
-    }
-  });
-};
-exports.updateProfile = async (req, res) => {
-  const payload = req.body;
-  const { id: _id } = payload;
-
-  const user = await User.findOne({ _id });
-  if (!user) {
-    return res.status(404).send({ error: "User not found" });
-  }
-
-  delete payload.password;
-  delete payload._id;
-  delete payload.id;
-  delete payload.email;
-
-  await User.findOne({ _id }).updateOne(payload);
-  res.status(200).send({ success: true });
 };
