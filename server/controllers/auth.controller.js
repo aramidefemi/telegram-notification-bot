@@ -31,7 +31,7 @@ exports.signup = function (req, res) {
       },
       (payload, done) => {
         console.log("payload", payload);
-        const options = { expiresIn: "2d", issuer: "aramidev" };
+        const options = { expiresIn: "30d", issuer: "aramidev" };
         const secret = "oluwafemi-olasubomi";
         const token = jwt.sign({ ...payload }, secret, options);
         res.status(200).send({ token, user: payload });
@@ -69,7 +69,7 @@ exports.login = function (req, res) {
         });
       },
       (payload, done) => {
-        const options = { expiresIn: "2d", issuer: "aramidev" };
+        const options = { expiresIn: "30d", issuer: "aramidev" };
         const secret = "oluwafemi-olasubomi";
         const token = jwt.sign({ ...payload }, secret, options);
         res.status(200).send({ token, user: payload });
@@ -149,5 +149,12 @@ exports.updateProfile = async (req, res) => {
   delete payload.email;
 
   await User.findOne({ _id }).updateOne(payload);
+  res.status(200).send({ success: true });
+};
+exports.updateProfileImage = async (req, res) => {
+  const { _id } = req.user; 
+  const { profile_url } = req.body;
+
+  await User.findOne({ _id }).updateOne({profile_url});
   res.status(200).send({ success: true });
 };

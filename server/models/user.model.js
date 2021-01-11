@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const ResponseSchema = new mongoose.Schema(
+const UserSchema = new mongoose.Schema(
   {
     fullname: {
       type: String,
@@ -10,7 +10,15 @@ const ResponseSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    profile_url: {
+      type: String,
+      default: "",
+    },
     email: {
+      type: String,
+      default: "",
+    },
+    bio: {
       type: String,
       default: "",
     },
@@ -52,4 +60,4 @@ const ResponseSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("User", ResponseSchema);
+module.exports = mongoose.model("User", UserSchema);
