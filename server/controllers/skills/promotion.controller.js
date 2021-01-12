@@ -10,6 +10,31 @@ exports.getSkills = async (req, res) => {
   const skills = await Skills.find({});
   return res.status(200).send(skills);
 };
+exports.getServices = (req, res) => {
+  const { limit, page, category, title } = req.query;
+  var skip = parseInt(limit) * parseInt(page);
+
+  const match = {};
+  if (category) {
+    match['category'] = category;
+  }
+  if (title) {
+    match['title'] = title;
+  }
+
+  const query = OfferedServices.find(match);
+  query
+    .skip(parseInt(skip) || 0)
+    .limit(parseInt(limit) || 30)
+    .exec((err, services) => {
+      return res
+        .status(200)
+        .send({
+          data: services,
+          query: { ...query.getOptions(), total: services.length },
+        });
+    });
+};
 
 exports.addSkills = async (req, res) => {
   const skills = req.body;
@@ -37,6 +62,6 @@ exports.editOfferedService = async (req, res) => {
   const service = req.body;
   const Service = OfferedServices.findOne({ _id: service.id });
   delete service._id;
-  Service.updateOne(service);
+  await Service.updateOne(service);
   return res.status(200).send({ success: true });
 };
