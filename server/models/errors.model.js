@@ -6,6 +6,14 @@ const ErrorSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    user: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User',
+    },
+    imei: {
+      type: String,
+      default: "",
+    },
     message: {
       type: String,
       default: "",

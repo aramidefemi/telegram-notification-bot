@@ -6,6 +6,14 @@ const InteractionsSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    user: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User',
+    },
+    imei: {
+      type: String,
+      default: "",
+    },
     acton: {
       type: String,
       default: "",

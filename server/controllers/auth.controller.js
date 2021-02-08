@@ -122,8 +122,16 @@ exports.changePassword = function (req, res) {
   );
 };
 exports.getProfile = function (req, res) {
-  const { email } = req.body;
-  User.findOne({ email }).exec((err, user) => {
+  const { email, id } = req.body;
+  const str = email ?? id;
+
+  if (!str || 0 === str.length) {
+    return res.status(404).send({ error: "Email or id Empty" });
+  }
+
+  const match  =  email ? { email } :  { _id: id };
+
+  User.findOne(match).exec((err, user) => {
     if (err) {
       res.status(400).send({ error: err });
       codeBits.sendMessageToAdmin(`an error occurred ${err}`);
@@ -152,9 +160,9 @@ exports.updateProfile = async (req, res) => {
   res.status(200).send({ success: true });
 };
 exports.updateProfileImage = async (req, res) => {
-  const { _id } = req.user; 
+  const { _id } = req.user;
   const { profile_url } = req.body;
 
-  await User.findOne({ _id }).updateOne({profile_url});
+  await User.findOne({ _id }).updateOne({ profile_url });
   res.status(200).send({ success: true });
 };

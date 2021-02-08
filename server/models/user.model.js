@@ -30,11 +30,21 @@ const UserSchema = new mongoose.Schema(
     ip: {
       type: String,
     },
+    imei: {
+      type: String,
+      default: "",
+    },
+    imei_list: {
+      type: [String],
+      default: [],
+    },
     data: {
       type: mongoose.Schema.Types.Mixed,
+      default: {},
     },
     channel: {
       type: String,
+      default: ""
     },
     userid: {
       type: String,

@@ -7,7 +7,9 @@ const OfferedServices = require("../../models/offeredServices.model");
 const codeBits = require("../../lib/code.bits");
 
 exports.getSkills = async (req, res) => {
-  const skills = await Skills.find({});
+  const limit = parseInt(req.query.limit)
+
+  const skills = await Skills.find({}).limit(parseInt(limit) || 50);
   return res.status(200).send(skills);
 };
 exports.getServices = (req, res) => {

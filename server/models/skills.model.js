@@ -7,11 +7,11 @@ const SkillSchema = new mongoose.Schema(
       default: "",
       required: 'Please enter skill title'
     },
-    slug: {
+    image: {
       type: String,
-      default: "", 
-      required: 'Please enter slug name, this is used in getting images',
-    },
+      default: "",
+      required: 'Please enter skill image url'
+    }
   },
   {
     timestamps: true,
