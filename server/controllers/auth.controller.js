@@ -166,3 +166,7 @@ exports.updateProfileImage = async (req, res) => {
   await User.findOne({ _id }).updateOne({ profile_url });
   res.status(200).send({ success: true });
 };
+exports.me = async (req, res) => {
+  const { user } = req;
+  res.status(200).send({ user });
+};
