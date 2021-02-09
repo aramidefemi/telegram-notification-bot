@@ -46,10 +46,6 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: ""
     },
-    userid: {
-      type: String,
-      default: "",
-    },
     is_bot: {
       type: String,
       default: "",

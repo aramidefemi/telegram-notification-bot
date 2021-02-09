@@ -129,7 +129,7 @@ exports.getProfile = function (req, res) {
     return res.status(404).send({ error: "Email or id Empty" });
   }
 
-  const match  =  email ? { email } :  { _id: id };
+  const match = email ? { email } : { _id: id };
 
   User.findOne(match).exec((err, user) => {
     if (err) {
@@ -144,7 +144,7 @@ exports.getProfile = function (req, res) {
 };
 exports.updateProfile = async (req, res) => {
   const payload = req.body;
-  const { id: _id } = payload;
+  const { _id } = req.user;
 
   const user = await User.findOne({ _id });
   if (!user) {
@@ -167,6 +167,15 @@ exports.updateProfileImage = async (req, res) => {
   res.status(200).send({ success: true });
 };
 exports.me = async (req, res) => {
-  const { user } = req;
-  res.status(200).send({ user });
+  const { _id } = req.user;
+  User.findOne({ _id }).exec((err, user) => {
+    if (err) {
+      res.status(400).send({ error: err });
+      codeBits.sendMessageToAdmin(`an error occurred ${err}`);
+    } else if (!user) {
+      res.status(404).send({ error: "User not found" });
+    } else {
+      res.status(200).send({ user });
+    }
+  });
 };
