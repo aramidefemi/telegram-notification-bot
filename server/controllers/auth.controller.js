@@ -122,14 +122,14 @@ exports.changePassword = function (req, res) {
   );
 };
 exports.getProfile = function (req, res) {
-  const { email, id } = req.body;
-  const str = email ?? id;
+  const { id } = req.params;
+  const str = id;
 
   if (!str || 0 === str.length) {
-    return res.status(404).send({ error: "Email or id Empty" });
+    return res.status(404).send({ error: "id is Empty" });
   }
 
-  const match = email ? { email } : { _id: id };
+  const match =  { _id: id };
 
   User.findOne(match).exec((err, user) => {
     if (err) {

@@ -8,7 +8,7 @@ module.exports = (app) => {
   app.post('/change-password', controller.changePassword); 
 
   app.get('/me', validateToken, controller.me); 
-  app.get('/profile', validateToken, controller.getProfile); 
+  app.get('/profile/:id', validateToken, controller.getProfile); 
   app.put('/profile', validateToken, controller.updateProfile); 
   app.put('/updateProfileImage', validateToken, controller.updateProfileImage); 
 };
