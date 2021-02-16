@@ -50,21 +50,21 @@ exports.signup = function (req, res) {
   );
 };
 exports.login = function (req, res) {
-  const user = req.body;
+  const { email, password, } = req.body;
   Async.waterfall(
     [
       (next) => {
-        user.email && user.password ? next(null) : next("Invalid Parameters");
+        email && password ? next(null) : next("Invalid Parameters");
       },
       (next) => {
-        User.findOne({ email: user.email }).exec((err, payload) => {
+        User.findOne({ email }).exec((err, payload) => {
           if (err) next(err);
 
           payload !== null ? next(null, payload) : next("User not found");
         });
       },
       (payload, next) => {
-        bcrypt.compare(user.password, payload.password, function (err, result) {
+        bcrypt.compare(password, payload.password, function (err, result) {
           result ? next(null, payload) : next("Passwords don't match");
         });
       },
@@ -78,6 +78,7 @@ exports.login = function (req, res) {
       },
     ],
     (err) => {
+      await User.findOne({ email }).updateOne({ lng, lat });
       if (err) {
         res.status(400).send({ error: err });
         codeBits.sendMessageToAdmin(`an error occurred ${err}`);

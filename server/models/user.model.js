@@ -46,6 +46,14 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: ""
     },
+    lng: {
+      type: String,
+      default: "",
+    },
+    lat: {
+      type: String,
+      default: "",
+    }, 
     is_bot: {
       type: String,
       default: "",

@@ -28,9 +28,21 @@ const offeredServicesSchema = new mongoose.Schema(
       type: String,
       default: "",
     }, 
-    category: {
+    lng: {
       type: String,
       default: "",
+    }, 
+    lat: {
+      type: String,
+      default: "",
+    }, 
+    category: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Skill',
+    },
+    businessRegistration: {
+      type: Boolean,
+      default: false,
     },
     images: {
       type: Array,

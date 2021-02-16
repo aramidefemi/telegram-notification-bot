@@ -13,18 +13,11 @@ exports.getSkills = async (req, res) => {
   return res.status(200).send(skills);
 };
 exports.getServices = (req, res) => {
-  const { limit, page, category, title } = req.query;
-  var skip = parseInt(limit) * parseInt(page);
-
-  const match = {};
-  if (category) {
-    match['category'] = category;
-  }
-  if (title) {
-    match['title'] = title;
-  }
-
-  const query = OfferedServices.find(match);
+  const { limit, page } = req.query;
+  const { category_id: category } = req.params;
+  const skip = parseInt(limit) * parseInt(page);
+console.log({ category })
+  const query = OfferedServices.find({ category });
   query
     .skip(parseInt(skip) || 0)
     .limit(parseInt(limit) || 30)

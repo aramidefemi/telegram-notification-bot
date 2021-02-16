@@ -9,5 +9,5 @@ module.exports = (app) => {
   app.post('/offer-service',validateToken, controller.offerService);  
   app.delete('/service',validateToken, controller.deleteOfferedService);  
   app.put('/service',validateToken, controller.editOfferedService);  
-  app.get('/services',validateToken, controller.getServices);  
+  app.get('/services/:category_id',validateToken, controller.getServices);  
 };
