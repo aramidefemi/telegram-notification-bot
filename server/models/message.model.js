@@ -3,16 +3,19 @@ const mongoose = require("mongoose");
 const MessageSchema = new mongoose.Schema(
   {
     receiver: {
-      type: String,
-      default: "",
+      type: mongoose.Schema.ObjectId,
+      ref: 'User',
+      required: "invalid data"
     },
     sender: {
-      type: String,
-      default: "",
+      type: mongoose.Schema.ObjectId,
+      ref: 'User',
+      required: "invalid data"
     },
-    contactGroup: {
+    conversation_id: {
       type: mongoose.Schema.ObjectId,
       ref: 'contactGroup',
+      required: "invalid data"
     },
     messageType: {
       type: String,
@@ -28,10 +31,7 @@ const MessageSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      default: "",
-    },
-    ip: {
-      type: String,
+      default: "sending",
     },
     data: {
       type: mongoose.Schema.Types.Mixed,

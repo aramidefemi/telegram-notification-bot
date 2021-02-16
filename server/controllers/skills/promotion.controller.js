@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const Skills = require("../../models/skills.model");
 const OfferedServices = require("../../models/offeredServices.model");
+const Review = require("../../models/review.model");
 const codeBits = require("../../lib/code.bits");
 
 exports.getSkills = async (req, res) => {
@@ -19,6 +20,7 @@ exports.getServices = (req, res) => {
 console.log({ category })
   const query = OfferedServices.find({ category });
   query
+  .populate('category')
     .skip(parseInt(skip) || 0)
     .limit(parseInt(limit) || 30)
     .exec((err, services) => {
@@ -44,6 +46,27 @@ exports.offerService = async (req, res) => {
     if (err) return res.status(200).send({ error: err });
     return res.status(200).send({ success: true, service: offeredServices });
   });
+};
+
+exports.getServiceReviews = async (req, res) => {
+  const limit = parseInt(req.query.limit)
+  const { service } = req.params;
+
+  const services = await Review.find({ service })
+  .limit(parseInt(limit) || 50);
+
+  console.log('service',service)
+  return res.status(200).send(services);
+};
+exports.reviewService = async (req, res) => {
+  const { _id: user } = req.user;
+  const { body } = req;
+
+  const review  = Review({ ...body, user });
+  review.save();
+
+
+  return res.status(200).send({ success: true });
 };
 
 exports.deleteOfferedService = (req, res) => {

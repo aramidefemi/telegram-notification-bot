@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const offeredServicesSchema = new mongoose.Schema(
+const offeredServiceSchema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -59,4 +59,4 @@ const offeredServicesSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("OfferedServices", offeredServicesSchema);
+module.exports = mongoose.model("OfferedService", offeredServiceSchema);

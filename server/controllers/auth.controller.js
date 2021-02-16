@@ -49,8 +49,8 @@ exports.signup = function (req, res) {
     }
   );
 };
-exports.login = function (req, res) {
-  const { email, password, } = req.body;
+exports.login = async (req, res) => {
+  const { email, password, lng, lat } = req.body;
   Async.waterfall(
     [
       (next) => {
@@ -77,7 +77,7 @@ exports.login = function (req, res) {
         done();
       },
     ],
-    (err) => {
+    async (err) => {
       await User.findOne({ email }).updateOne({ lng, lat });
       if (err) {
         res.status(400).send({ error: err });

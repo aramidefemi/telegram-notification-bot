@@ -2,21 +2,13 @@ const mongoose = require("mongoose");
 
 const ContactGroupSchema = new mongoose.Schema(
   {
-    userOne: {
+    user: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
     },
-    userTwo: {
+    contact: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
-    },
-    contactOne: {
-      type: mongoose.Schema.ObjectId,
-      ref: 'Contact',
-    },
-    contactTwo: {
-      type: mongoose.Schema.ObjectId,
-      ref: 'Contact',
     },
   },
   {

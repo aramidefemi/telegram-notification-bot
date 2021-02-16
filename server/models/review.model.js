@@ -1,22 +1,18 @@
 const mongoose = require("mongoose");
 
-const ContactSchema = new mongoose.Schema(
+const ReviewSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
     },
-    partner: {
+    service: {
       type: mongoose.Schema.ObjectId,
-      ref: 'User',
+      ref: 'OfferedService',
     },
-    conversation_id: {
-      type: mongoose.Schema.ObjectId,
-      ref: 'ContactGroup',
-    },
-    lastMessage: {
-      type: mongoose.Schema.ObjectId,
-      ref: 'Message',
+    review: {
+      type: String,
+      default: "",
     },
     data: {
       type: mongoose.Schema.Types.Mixed,
@@ -34,4 +30,4 @@ const ContactSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("Contact", ContactSchema);
+module.exports = mongoose.model("Review", ReviewSchema);
