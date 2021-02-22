@@ -13,13 +13,33 @@ exports.getSkills = async (req, res) => {
   const skills = await Skills.find({}).limit(parseInt(limit) || 50);
   return res.status(200).send(skills);
 };
+exports.searchServices = (req, res) => {
+  const { limit, page } = req.query;
+  const { search } = req.params;
+  const skip = parseInt(limit) * parseInt(page); 
+  const query = OfferedServices.fuzzySearch(search);
+
+  query
+  .populate('user', "fullname profile_url email phone")
+  .populate('category')
+    .skip(parseInt(skip) || 0)
+    .limit(parseInt(limit) || 30)
+    .exec((err, services) => {
+      return res
+        .status(200)
+        .send({
+          data: services,
+          query: { ...query.getOptions(), total: services.length },
+        });
+    });
+};
 exports.getServices = (req, res) => {
   const { limit, page } = req.query;
   const { category_id: category } = req.params;
-  const skip = parseInt(limit) * parseInt(page);
-console.log({ category })
+  const skip = parseInt(limit) * parseInt(page); 
   const query = OfferedServices.find({ category });
   query
+  .populate('user', "fullname profile_url email phone")
   .populate('category')
     .skip(parseInt(skip) || 0)
     .limit(parseInt(limit) || 30)

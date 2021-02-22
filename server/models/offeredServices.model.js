@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongoose_fuzzy_searching = require('mongoose-fuzzy-searching');
 
 const offeredServiceSchema = new mongoose.Schema(
   {
@@ -59,4 +60,5 @@ const offeredServiceSchema = new mongoose.Schema(
   }
 );
 
+offeredServiceSchema.plugin(mongoose_fuzzy_searching, { fields: ['title', 'description'] });
 module.exports = mongoose.model("OfferedService", offeredServiceSchema);
