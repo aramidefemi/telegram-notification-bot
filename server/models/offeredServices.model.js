@@ -13,9 +13,14 @@ const offeredServiceSchema = new mongoose.Schema(
       default: "", 
       required: 'Please enter description',
     },
+    
     address: {
       type: String,
       default: "",
+    }, 
+    likes: {
+      type: Number,
+      default: 0,
     }, 
     user: {
       type: mongoose.Schema.ObjectId,

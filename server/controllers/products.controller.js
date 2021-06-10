@@ -3,8 +3,18 @@ const User = require("../models/user.model");
 const Response = require("../models/response.model");
 const SellRequest = require("../models/sellrequest.model");
 const codeBits = require("../lib/code.bits");
+const app = require("../server");
 
 exports.hello = function (req, res) {
+//   app.io.on('connection', (connection) => {
+//     console.log('New client connected');
+//     connection.on('disconnect', () => console.log('Client disconnected'));
+//   });
+//   const count = app.io.engine.clientsCount;
+// // may or may not be similar to the count of Socket instances in the main namespace, depending on your usage
+// const count2 = app.io.of("/").sockets.size;
+// console.log('count',count,count2)
+//   app.io.emit(`notify`, {})
   console.log(req.connection.remoteAddress)
   codeBits.sendMessageToAdmin('new user start up '+req.connection.remoteAddress); 
   res.status(200).send({ hello: 'dear, :'+req.connection.remoteAddress})

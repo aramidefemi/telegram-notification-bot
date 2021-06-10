@@ -14,6 +14,7 @@ module.exports = (app) => {
 
   app.get('/review/:service',validateToken, controller.getServiceReviews);
   app.post('/review',validateToken, controller.reviewService);
+  app.get('/like/:id',validateToken, controller.likeService);
   
   
 };
