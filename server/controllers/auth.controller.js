@@ -157,15 +157,15 @@ exports.updateProfile = async (req, res) => {
   delete payload.id;
   delete payload.email;
 
-  await User.findOne({ _id }).updateOne(payload);
-  res.status(200).send({ success: true });
+  const updated = await User.findOne({ _id }).updateOne(payload);
+  res.status(200).send({ success: true, user: updated });
 };
 exports.updateProfileImage = async (req, res) => {
   const { _id } = req.user;
   const { profile_url } = req.body;
 
   await User.findOne({ _id }).updateOne({ profile_url });
-  res.status(200).send({ success: true });
+  res.status(200).send({ success: true, image: profile_url });
 };
 exports.me = async (req, res) => {
   const { _id } = req.user;
