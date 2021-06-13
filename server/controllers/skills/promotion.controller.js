@@ -76,14 +76,13 @@ exports.getServiceReviews = async (req, res) => {
 
   const services = await Review.find({ service }).limit(parseInt(limit) || 50);
 
-  console.log("service", service);
   return res.status(200).send(services);
 };
 exports.reviewService = async (req, res) => {
   const { _id: user } = req.user;
   const { body } = req;
 
-  const review = Review({ ...body, user });
+  const review = Review({ ...body, user }).populate("user", "fullname profile_url email phone");
   review.save();
 
   return res.status(200).send({ success: true });
