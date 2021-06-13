@@ -97,9 +97,9 @@ exports.changePassword = function (req, res) {
         });
       },
       (payload, done) => {
-        bcrypt.compare(user.old, payload.password, function (err, result) {
+        bcrypt.compare(user.oldPassword, payload.password, function (err, result) {
           if (result) {
-            bcrypt.hash(user.new, 10, function (err, hash) {
+            bcrypt.hash(user.newPassword, 10, function (err, hash) {
               payload.password = hash;
               payload.save();
             });
