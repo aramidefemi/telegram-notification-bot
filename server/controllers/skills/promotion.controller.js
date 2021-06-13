@@ -74,7 +74,7 @@ exports.getServiceReviews = async (req, res) => {
   const limit = parseInt(req.query.limit);
   const { service } = req.params;
 
-  const services = await Review.find({ service }).limit(parseInt(limit) || 50);
+  const services = await Review.find({ service }).limit(parseInt(limit) || 50).populate("user", "fullname profile_url email phone");
 
   return res.status(200).send(services);
 };
@@ -82,7 +82,7 @@ exports.reviewService = async (req, res) => {
   const { _id: user } = req.user;
   const { body } = req;
 
-  const review = Review({ ...body, user }).populate("user", "fullname profile_url email phone");
+  const review = Review({ ...body, user });
   review.save();
 
   return res.status(200).send({ success: true });
