@@ -22,6 +22,10 @@ const offeredServiceSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     }, 
+    rating: {
+      type: Number,
+      default: 5,
+    }, 
     user: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',

@@ -51,8 +51,24 @@ exports.getServices = (req, res) => {
 exports.likeService = async (req, res) => {
   const { id } = req.params;
   const service = await OfferedServices.findOne({ _id: id });
-  await service.updateOne({ likes: service.likes + 1 });
-  return res.status(200).send({ id, likes: service.likes });
+  const likes =  service.likes + 1
+  await service.updateOne({ likes });
+  return res.status(200).send({ id, likes });
+};
+exports.unlikeService = async (req, res) => {
+  const { id } = req.params;
+  const service = await OfferedServices.findOne({ _id: id });
+  const likes =  service.likes - 1
+  await service.updateOne({ likes });
+  return res.status(200).send({ id, likes });
+};
+exports.rateService = async (req, res) => {
+  const { id } = req.params;
+  const { rate } = req.body;
+  const service = await OfferedServices.findOne({ _id: id });
+  const rating  = round((service.rating + rate) / 2, 1);
+  await service.updateOne({ rating });
+  return res.status(200).send({ id, rating });
 };
 
 exports.addSkills = async (req, res) => {

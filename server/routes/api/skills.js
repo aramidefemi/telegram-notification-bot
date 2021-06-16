@@ -14,7 +14,8 @@ module.exports = (app) => {
 
   app.get('/review/:service',validateToken, controller.getServiceReviews);
   app.post('/review',validateToken, controller.reviewService);
-  app.get('/like/:id',validateToken, controller.likeService);
-  
-  
+  app.get('/like/:id',validateToken, controller.likeService); // just for backwards compatibility of current demo app remove as soon as possible
+  app.put('/like/:id',validateToken, controller.likeService);
+  app.put('/unlike/:id',validateToken, controller.unlikeService);
+  app.post('/rate/:id',validateToken, controller.rateService);
 };
