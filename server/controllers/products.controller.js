@@ -1,7 +1,6 @@
 const Async = require("async");
 const User = require("../models/user.model");
 const Response = require("../models/response.model");
-const SellRequest = require("../models/sellrequest.model");
 const codeBits = require("../lib/code.bits");
 const app = require("../server");
 

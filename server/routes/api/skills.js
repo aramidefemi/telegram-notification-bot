@@ -10,6 +10,7 @@ module.exports = (app) => {
   app.delete('/service',validateToken, controller.deleteOfferedService);  
   app.put('/service',validateToken, controller.editOfferedService);  
   app.get('/services/:category_id',validateToken, controller.getServices);
+  app.get('/service/:id',validateToken, controller.getService);
   app.get('/services/search/:search',validateToken, controller.searchServices);
 
   app.get('/review/:service',validateToken, controller.getServiceReviews);
