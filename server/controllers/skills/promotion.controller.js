@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const Skills = require("../../models/skills.model");
+const User = require("../../models/user.model");
 const OfferedServices = require("../../models/offeredServices.model");
 const Review = require("../../models/review.model");
 const Likes = require("../../models/likes.model");
@@ -21,12 +22,21 @@ exports.getSkills = async (req, res) => {
   const skills = await Skills.find({}).limit(parseInt(limit) || 50);
   return res.status(200).send(skills);
 };
+const userServicesInterests = async (id, service) => {
+  const { category } = service;
+  const user = User.findById(id);
+  await user.updateOne({ $push: { categories: category } });
+};
 exports.searchServices = async (req, res) => {
   try {
     const { _id } = req.user;
     const { limit, page } = req.query;
     const { search } = req.params;
     const skip = parseInt(limit) * parseInt(page);
+
+    const user = User.findById(_id);
+    await user.updateOne({ $push: { serviceSearchStrings: search  } });
+    
     const results = OfferedServices.fuzzySearch(search)
       .populate("user", "fullname profile_url email phone")
       .populate("category")
@@ -37,6 +47,8 @@ exports.searchServices = async (req, res) => {
       item.liked = item.likers.includes(_id);
       return item;
     });
+
+    userServicesInterests(_id,data[0])
 
     return res.status(200).send({
       data,
@@ -62,10 +74,11 @@ exports.getServices = async (req, res) => {
       .skip(parseInt(skip) || 0)
       .limit(parseInt(limit) || 20);
 
+    userServicesInterests(_id,data[0])
     const data = results.map((item) => {
       item.liked = item.likers.includes(_id);
       return item;
-    }); 
+    });
 
     return res.status(200).send({
       data,
@@ -84,12 +97,19 @@ exports.getService = async (req, res) => {
     // const places = await geocoder.reverse({ lat: 5.141486901, lon: 7.308389001 });
     // console.log('places',places)
     const { id } = req.params;
-    const { _id } = req.user;
+    const { _id, lat, lng } = req.user;
 
     const service = await OfferedServices.findById(id)
       .populate("user", "fullname profile_url email phone")
-      .populate("category");
+      .populate("category")
 
+    userServicesInterests(_id,service)
+    service.distance = calcCrow(
+      service.lat,
+      service.lng,
+      lat,
+      lng
+    );
     service.liked = service.likers.includes(_id);
 
     return res.status(200).send({ service });
@@ -189,10 +209,7 @@ exports.editOfferedService = async (req, res) => {
   return res.status(200).send({ success: true });
 };
 
-function calcCrow(coordinates) {
-  const [lat2c, lon2] = coordinates.split(",");
-  const lat1c = "51.515419";
-  const lon1 = "-0.141099";
+function calcCrow(lat2c, lon2, lat1c, lon1) {
   var R = 6371; // km
   var dLat = toRad(lat2c - lat1c);
   var dLon = toRad(lon2 - lon1);
@@ -203,7 +220,7 @@ function calcCrow(coordinates) {
     Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   var d = R * c;
-  return d;
+  return Math.round(d);
 }
 function toRad(Value) {
   return (Value * Math.PI) / 180;

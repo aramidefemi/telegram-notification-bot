@@ -62,6 +62,14 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    categories: [{
+      type: mongoose.Schema.ObjectId,
+      ref: "Skill",
+    }],
+    serviceSearchStrings: [{
+      type: String,
+      default: "",
+    }],
   },
   {
     timestamps: true,

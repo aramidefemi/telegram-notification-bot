@@ -50,6 +50,10 @@ const offeredServiceSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    distance: {
+      type: String,
+      default: "",
+    },
     category: {
       type: mongoose.Schema.ObjectId,
       ref: "Skill",
@@ -80,6 +84,9 @@ const offeredServiceSchema = new mongoose.Schema(
 // offeredServiceSchema.virtual("liked").get(function () {
 //   return this.likers;
 // });
+offeredServiceSchema.virtual("likes").get(function (e) { 
+  return this.likers.length;
+});
 offeredServiceSchema.virtual("likes").get(function (e) { 
   return this.likers.length;
 });
