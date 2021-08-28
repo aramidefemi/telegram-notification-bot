@@ -23,9 +23,11 @@ exports.getSkills = async (req, res) => {
   return res.status(200).send(skills);
 };
 const userServicesInterests = async (id, service) => {
-  const { category } = service;
-  const user = User.findById(id);
-  await user.updateOne({ $push: { categories: category } });
+  if (service) {
+    const { category } = service;
+    const user = User.findById(id);
+    if (category) await user.updateOne({ $push: { categories: category } });
+  }
 };
 exports.searchServices = async (req, res) => {
   try {
@@ -35,9 +37,9 @@ exports.searchServices = async (req, res) => {
     const skip = parseInt(limit) * parseInt(page);
 
     const user = User.findById(_id);
-    await user.updateOne({ $push: { serviceSearchStrings: search  } });
-    
-    const results = OfferedServices.fuzzySearch(search)
+    await user.updateOne({ $push: { serviceSearchStrings: search } });
+
+    const results = await OfferedServices.fuzzySearch(search)
       .populate("user", "fullname profile_url email phone")
       .populate("category")
       .skip(parseInt(skip) || 0)
@@ -48,8 +50,9 @@ exports.searchServices = async (req, res) => {
       return item;
     });
 
-    userServicesInterests(_id,data[0])
+    userServicesInterests(_id, data[0]);
 
+    console.log('data',data)
     return res.status(200).send({
       data,
       query: {
@@ -74,12 +77,11 @@ exports.getServices = async (req, res) => {
       .skip(parseInt(skip) || 0)
       .limit(parseInt(limit) || 20);
 
-    userServicesInterests(_id,data[0])
     const data = results.map((item) => {
       item.liked = item.likers.includes(_id);
       return item;
     });
-
+    userServicesInterests(_id, data[0]);
     return res.status(200).send({
       data,
       query: {
@@ -101,15 +103,10 @@ exports.getService = async (req, res) => {
 
     const service = await OfferedServices.findById(id)
       .populate("user", "fullname profile_url email phone")
-      .populate("category")
+      .populate("category");
 
-    userServicesInterests(_id,service)
-    service.distance = calcCrow(
-      service.lat,
-      service.lng,
-      lat,
-      lng
-    );
+    userServicesInterests(_id, service);
+    service.distance = calcCrow(service.lat, service.lng, lat, lng);
     service.liked = service.likers.includes(_id);
 
     return res.status(200).send({ service });
