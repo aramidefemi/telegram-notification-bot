@@ -58,6 +58,10 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    userType: {
+      type: String,
+      default: "CUSTOMER", //ADMIN
+    },
     language_code: {
       type: String,
       default: "",
