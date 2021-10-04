@@ -6,8 +6,9 @@ cloudinary.config({
   api_secret: 'lKr2ekckuuf_N2vd-vbWtwPLnRA',
   secure: true,
 });
+
 exports.imageUpload = (req, res) => {
   cloudinary.uploader.upload(req.file.path, async (error, result) => {
-    return res.status(200).send({ url: result.url });
+    return res.status(200).send({ url: result.secure_url });
   });
 };
